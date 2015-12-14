@@ -1,0 +1,43 @@
+{
+  "name": "family-gitry",
+  "version": "1.0.0",
+  "description": "An incredibly intuitive family tree management and visualization engine with tree/tree and node/user associations.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Markypc3/family-gitry.git"
+  },
+  "keywords": [
+    "Node",
+    "Express",
+    "MongoDB",
+    "Angular",
+    "D3js",
+    "Family",
+    "Genealogy",
+    "tree"
+  ],
+  "author": "Marco Pariente-Cohen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Markypc3/family-gitry/issues"
+  },
+  "homepage": "https://github.com/Markypc3/family-gitry#readme",
+  "dependencies": {
+    "angular": "^1.4.8",
+    "bcrypt": "^0.8.5",
+    "body-parser": "^1.14.1",
+    "cookie-parser": "^1.4.0",
+    "d3": "^3.5.10",
+    "express": "^4.13.3",
+    "express-jwt": "^3.3.0",
+    "jsonwebtoken": "^5.4.1",
+    "kerberos": "0.0.17",
+    "mongoose": "^4.3.1",
+    "morgan": "^1.6.1",
+    "path": "^0.12.7"
+  }
+}
