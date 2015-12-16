@@ -20,6 +20,7 @@ userSchema.pre('save', function(next){
     bcrypt.hash(user.password, salt, function(err, hashedPassword){
       if(err) return next(err);
       user.password = hashedPassword;
+      user.updated_at = Date.now;
       next();
     });
   });

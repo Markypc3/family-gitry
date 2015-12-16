@@ -4,17 +4,23 @@ let logger = require('morgan');
 let path = require('path');
 let bodyParser = require('body-parser');
 let jwt = require('jsonwebtoken');
-// let userRoutes = require('./routes/userRoutes');
 let app = express();
 
+//app config
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
+//app public routes set
 app.use('/', express.static(path.join(__dirname, 'public')));
 app.use('/d3', express.static(path.join(__dirname, 'node_modules', 'd3')))
 
-
-// app.use('/users', userRoutes);
+//app api routes set
+let userRoutes = require('./routes/userRoutes');
+let treeRoutes = require('./routes/treeRoutes');
+let personRoutes = require('./routes/personRoutes');
+app.use('/users', userRoutes);
+app.use('/trees', treeRoutes);
+app.use('/people', personRoutes);
 
 let mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/familygitry');

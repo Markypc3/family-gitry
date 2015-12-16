@@ -7,12 +7,18 @@ const secret = require('../config.js').secret;
 
 router.route('/')
   .all(expressJWT({
-    secret: secret,
-    userProperty: 'auth'
+    secret: secret  //,
+                    //    userProperty: 'auth' //This was in cort's code, not sure why yet
   }))
-  .get(user.fetch)
+  .get(user.fetchAll)
   .put(user.update)
   .delete(user.destroy);
+
+router.route('/:id')
+  .all(expressJWT({
+    secret: secret
+  }))
+  .get(user.show);
 
 router.route('/auth')
   .post(user.auth);

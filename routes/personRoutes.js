@@ -14,4 +14,16 @@ router.route('/')
   .post(people.create)
   .delete(people.destroy);
 
+router.route('/query')
+  .all(expressJWT({
+    secret: secret
+  }))
+  .get(people.fetchPeople);
+
+router.route('/all')
+  .all(expressJWT({
+    secret: secret
+  }))
+  .get(people.fetchAll);
+
 module.exports = router;
