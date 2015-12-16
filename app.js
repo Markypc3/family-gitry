@@ -3,7 +3,7 @@ let express = require('express');
 let logger = require('morgan');
 let path = require('path');
 let bodyParser = require('body-parser');
-let jwt = require('jsonwebtoken');
+// let jwt = require('jsonwebtoken');
 let app = express();
 
 //app config

@@ -1,15 +1,16 @@
+'use strict';
 let mongoose = require('mongoose');
 let bcrypt = require('bcrypt');
 
-let userSchema = mongoose.Schema({
+let userSchema = new mongoose.Schema({
   firstName: String,
   lastName: String,
   username: { type: String, unique: true, required: true },
   email: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   token: String,
-  personId: Schema.Types.ObjectId,
-  created_at: {type: Date, default: Date.now}
+  personId: mongoose.Schema.Types.ObjectId,
+  created_at: {type: Date, default: Date.now},
   updated_at: {type: Date, default: Date.now}
 });
 

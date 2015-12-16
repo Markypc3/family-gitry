@@ -5,10 +5,16 @@ let user = require('../controllers/usersController.js');
 let expressJWT = require('express-jwt');
 const secret = require('../config.js').secret;
 
+router.route('/auth')
+  .post(user.auth);
+
+router.route('/signup')
+  .post(user.create);
+  
 router.route('/')
   .all(expressJWT({
-    secret: secret  //,
-                    //    userProperty: 'auth' //This was in cort's code, not sure why yet
+    secret: secret,
+    userProperty: 'auth' //This was in cort's code, not sure why yet
   }))
   .get(user.fetchAll)
   .put(user.update)
@@ -20,11 +26,7 @@ router.route('/:id')
   }))
   .get(user.show);
 
-router.route('/auth')
-  .post(user.auth);
 
-router.route('/signup')
-  .post(user.create);
 
 router.route('logout')
   .get(user.logout);

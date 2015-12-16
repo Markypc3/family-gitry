@@ -6,7 +6,7 @@ function create(req, res){
   let newTree = new Tree(req.body.tree);
 
   newTree.save(function(err){
-    if(err)
+    if(err){
       res.status(401).send(err);
     } else {
       res.status(200).send()

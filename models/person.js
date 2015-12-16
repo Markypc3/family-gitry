@@ -1,8 +1,8 @@
 'use strict';
 let mongoose = require('mongoose');
 
-let personSchema = mongoose.Schema({
-  userId: {type: ObjectId, unique: true},
+let personSchema = new mongoose.Schema({
+  userId: {type: mongoose.Schema.Types.ObjectId, unique: true},
   firstName: String,
   middleName: String,
   lastName: String,
@@ -21,7 +21,9 @@ let personSchema = mongoose.Schema({
     type: [
       {
         spouseId: {
-          type: ObjectId, required: true, unique: true
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          unique: true
         },
         firstName: String,
         middleName: String,
@@ -32,7 +34,7 @@ let personSchema = mongoose.Schema({
         typeOfAssociation: {
           type: String,
           default: 'marriage'
-        }
+        },
         dateOfMarriage: Date,
         dateOfMarriageTerminated: Date,
       }
@@ -42,7 +44,9 @@ let personSchema = mongoose.Schema({
     type: [
       {
         childId: {
-          type: ObjectId, required: true, unique: true
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          unique: true
         },
         firstName: String,
         middleName: String,
@@ -58,7 +62,9 @@ let personSchema = mongoose.Schema({
     type: [
       {
         parentId: {
-          type: ObjectId, required: true, unique: true
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          unique: true
         },
         firstName: String,
         middleName: String,
@@ -74,5 +80,11 @@ let personSchema = mongoose.Schema({
     ]
   }
 });
+
+personSchema.pre('save', function(next){
+  let person = this;
+  person.updated_at = Date.now;
+  next();
+})
 
 module.exports = mongoose.model('Person', personSchema);

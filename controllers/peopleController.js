@@ -6,7 +6,7 @@ function create(req, res){
   let newPerson = new Person(req.body);
 
   newPerson.save(function(err, newPerson){
-    if(err)
+    if(err){
       res.status(401).send(err);
     } else {
       res.status(200).send(newPerson)
