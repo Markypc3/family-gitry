@@ -12,7 +12,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 //app public routes set
 app.use('/', express.static(path.join(__dirname, 'public')));
-app.use('/d3', express.static(path.join(__dirname, 'node_modules', 'd3')))
+app.use('/d3', express.static(path.join(__dirname, 'node_modules', 'd3')));
+app.use('/angular', express.static(path.join(__dirname, 'node_modules', 'angular')));
 
 //app api routes set
 let userRoutes = require('./routes/userRoutes');
