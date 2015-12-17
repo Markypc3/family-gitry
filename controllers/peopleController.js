@@ -14,7 +14,7 @@ function create(req, res){
   });
 }
 function fetch(req, res){
-  Person.findOne({_id: req.body.id}, function(err, person){
+  Person.findOne({_id: req.body._id}, function(err, person){
     if(err) res.send(err);
     res.send(person);
   });

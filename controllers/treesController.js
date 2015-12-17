@@ -14,15 +14,24 @@ function create(req, res){
   });
 }
 
-function fetch(req, res){
+function fetchByOwner(req, res){
   Tree.find({ownerId: req.body.ownerId}, function(err, trees){
     if(err) res.send(err);
     res.send(trees);
   });
 }
 
+function fetchOne(req, res){
+  Tree.find({_id: req.body.id}, function(err, tree){
+    if (err) {
+      return res.send(err);
+    }
+    res.send(tree);
+  });
+}
+
 function update(req, res) {
-  Tree.findOne({ownerId: req.body.tree.ownerId}, function(err, tree){
+  Tree.findOne({_id: req.body._id}, function(err, tree){
     tree.rootPersonId = req.body.tree.rootPersonId;
     tree.title = req.body.tree.title;
     tree.description = req.body.tree.description;
@@ -44,7 +53,8 @@ function destroy(req, res){
 }
 module.exports = {
   create: create,
-  fetch: fetch,
+  fetchByOwner: fetchByOwner,
+  fetchOne: fetchOne,
   update: update,
   destroy: destroy
 }

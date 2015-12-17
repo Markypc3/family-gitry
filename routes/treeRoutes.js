@@ -10,10 +10,14 @@ router.route('/')
   .all(expressJWT({
     secret: secret
   }))
-  .get(trees.fetch)
+  .get(trees.fetchByOwner)
   .post(trees.create)
   .put(trees.update)
   .delete(trees.destroy);
-
+router.route('/fetch')
+  .all(expressJWT({
+    secret: secret
+  }))
+  .get(trees.fetchOne);
 
 module.exports = router;

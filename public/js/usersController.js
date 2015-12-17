@@ -1,6 +1,6 @@
 'use strict';
 
-function usersController($http, User){
+function usersController($http, User, Tree){
     let self = this;
     self.loginMode = true;
     self.newUser = {};
@@ -13,6 +13,7 @@ function usersController($http, User){
       self.loggedin = true;
       self.loginMode = false;
       self.loginUser = {};
+      Tree.newlyLoggedIn = true;
     }
     self.signIn = function(){
       $http.post('/users/auth',self.loginUser).then(function(data){
