@@ -1,0 +1,14 @@
+.control {
+  display: inline-block;
+  float: left;
+  position: absolute;
+  padding: 15px;
+  height: 100%;
+  width: 250px;
+  background-color: red;
+  border-radius: 15px;
+  box-shadow: 15px 15px 10px 0px rgba(0,0,0,0.68);
+}
+.login {
+  float: right;
+}

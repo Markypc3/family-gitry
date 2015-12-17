@@ -5,11 +5,11 @@ let User = require('../models/user');
 const secret = require('../config.js').secret;
 
 function create(req, res){
-  debugger;
-  let newUser = new User(req.body.user);
+  let newUser = new User(req.body);
 
   newUser.save(function(err){
     if(err){
+      console.log(err.toString());
       res.status(401).send(err);
     } else {
       res.status(200).send({token: jwt.sign(newUser, secret), currentUser: newUser})
@@ -19,15 +19,21 @@ function create(req, res){
 
 function fetchAll(req, res){
   User.find({}, function(err, users){
-    if(err) res.send(err);
+    if(err) {
+      res.send(err);
+    } else {
     res.send(users);
-  })
+    }
+  });
 }
 
 function show(req, res){
   User.findOne({ _id: req.params.id }, function(err, user){
-    if(err) res.send(err);
-    res.send(user);
+    if(err) {
+      return res.send(err);
+    } else {
+      res.send(user);
+    }
   })
 }
 
@@ -41,8 +47,11 @@ function update(req, res){
     user.updated_at = Date.now;
     user.save(
       function(err, user){
-        if (err) res.send(err);
-        res.send(user);
+        if (err) {
+          res.send(err);
+        } else {
+          res.send(user);
+        }
       }
     );
   });
@@ -53,8 +62,11 @@ function destroy(req, res){
   User.findOne({ email : userParams.email}, function(err, user){
     if (err) { res.send(err) }
     user.remove(function (err, user) {
-      if (err) { res.send(err); }
-      res.send({ "record" : "deleted", 'user': user });
+      if (err) {
+        res.send(err);
+      } else {
+        res.send({ "record" : "deleted", 'user': user });
+      }
     });
   });
 }

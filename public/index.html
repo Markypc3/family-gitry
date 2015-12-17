@@ -1,11 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="familygitry">
   <head>
     <meta charset="utf-8">
     <title>Family Gitry AKA Donuts!</title>
+    <link rel="stylesheet" href="/css/style.css" media="screen" title="no title" charset="utf-8">
     <script src="./d3/d3.min.js" charset="utf-8"></script>
+    <script src="./angular/angular.min.js" charset="utf-8"></script>
+    <script src="/js/usersController.js" charset="utf-8"></script>
+    <script src="/js/app.js" charset="utf-8"></script>
   </head>
   <body>
-    <h1>Hello!</h1>
+    <div class="topbar">
+      <div class="login" ng-controller="usersController as user">
+        <form class="login" ng-show="user.loginMode" method="post">
+          <input type="text" name="email" ng-model="user.loginUser.email" placeholder="email" value=""></input>
+          <input type="password" name="password" ng-model="user.loginUser.password" placeholder="password" value=""></input>
+          <button type="button" name="Login" ng-click="user.signIn()">Login</button>
+          <button type="button" name="signupMode" ng-click="user.loginMode=false">Join Us!</button>
+        </form>
+        <form class="signup" ng-show="!user.loginMode && !user.loggedin" method="post">
+          <input type="text" name="username" ng-model="user.newUser.username" placeholder="username" value=""></input>
+          <input type="text" name="email" ng-model="user.newUser.email" placeholder="email" value=""></input>
+          <input type="password" name="password" ng-model="user.newUser.password" placeholder="password" value=""></input>
+          <button type="button" name="signup" ng-click="user.signup()">Sign up!</button>
+          <button type="button" name="cancel" ng-click="user.loginMode=true">Cancel</button>
+        </form>
+        <button type="button" name="logout" ng-show="user.loggedin" ng-click="user.logout()">Logout</button>
+      </div>
+    </div>
+    <div class="control">
+      Welcome to Family Gitry!
+    </div>
   </body>
 </html>
