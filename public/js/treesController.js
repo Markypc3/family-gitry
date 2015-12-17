@@ -10,7 +10,8 @@ function treesController($http, User, Tree, Person) {
   self.addTreeMode = false;
   self.selectTreeMode = false;
   self.editTreeMetaMode = false;
-  self.levelOneCntl = false;
+  self.addRootPersonMode = false;
+  self.levelOneCntl = true;
   self.addRootPersonModeDeceasedToggle = false;
 
   self.hideAllControls = function(){
@@ -21,51 +22,89 @@ function treesController($http, User, Tree, Person) {
   }
 
   self.setLevelOneCntl = function(){
-    self.hideAllControls();
-    self.levelOneCntl = true;
+    self.newlyLoggedIn = false;
+    self.addTreeMode = false;
+    self.selectTreeMode = false;
+    self.editTreeMetaMode = false;
+    self.addRootPersonMode = false;
+    self.addRootPersonModeDeceasedToggle = false;
+    Tree.levelOneCntl = self.levelOneCntl = true;
   }
 
   self.setAddTreeMode = function(){
-    self.hideAllControls();
+    self.newlyLoggedIn = false;
+    self.addTreeMode = false;
+    self.selectTreeMode = false;
+    self.editTreeMetaMode = false;
+    self.addRootPersonMode = false;
+    self.addRootPersonModeDeceasedToggle = false;
     self.addTreeMode = true;
   }
 
   self.setSelectTreeMode = function(){
-    self.hideAllControls();
+    self.newlyLoggedIn = false;
+    self.addTreeMode = false;
+    self.selectTreeMode = false;
+    self.editTreeMetaMode = false;
+    self.addRootPersonMode = false;
+    self.addRootPersonModeDeceasedToggle = false;
     self.getTrees();
     self.selectTreeMode = true;
   }
 
   self.setEditTreeMetaMode = function(tree){
-    self.hideAllControls();
+    self.newlyLoggedIn = false;
+    self.addTreeMode = false;
+    self.selectTreeMode = false;
+    self.editTreeMetaMode = false;
+    self.addRootPersonMode = false;
+    self.addRootPersonModeDeceasedToggle = false;
     self.editTreeMetaMode = true;
-    self.currentTree = tree;
-    Tree.currentTree = self.currentTree;
+    Tree.currentTree = self.currentTree = tree;
+  }
+
+  self.setAddRootPersonMode = function(){
+    self.newlyLoggedIn = false;
+    self.addTreeMode = false;
+    self.selectTreeMode = false;
+    self.editTreeMetaMode = false;
+    self.addRootPersonMode = false;
+    self.addRootPersonModeDeceasedToggle = false;
+    self.addRootPersonMode = true;
   }
 
   self.setEditTreeMode = function(tree){
-    self.hideAllControls();
+    self.newlyLoggedIn = false;
+    self.addTreeMode = false;
+    self.selectTreeMode = false;
+    self.editTreeMetaMode = false;
+    self.addRootPersonMode = false;
+    self.addRootPersonModeDeceasedToggle = false;
     Person.currentPerson._id = self.currentTree.rootPersonId;
     Person.newlyViewingPeople = true;
   }
-
-  self.setControlsActive = function(){
-    if (Tree.newlyLoggedIn == true) {
-      self.setLevelOneCntl();
-      Tree.newlyLoggedIn = false;
-    }
+  self.currentPersonIsSet = function(){
+    return Person.currentPerson._id != '';
   }
   self.loggedin = function(){
     if (User.token == '') {
       return false;
     }
+    if (Tree.newlyLoggedIn == true) {
+      self.levelOneCntl = true;
+      Tree.newlyLoggedIn = false;
+    }
     return true;
   }
 
+  self.isCurrentTreeSelected = function(){
+    return Object.keys(Tree.currentTree).length > 0
+  }
   self.getTrees = function(){
     let treeQuery = {ownerId: User.currentUser._id};
     $http.get('/trees', treeQuery).then(function(data){
       self.trees = data.data;
+      console.log(self.trees)
     });
   }
 
@@ -78,7 +117,9 @@ function treesController($http, User, Tree, Person) {
   }
 
   self.updateTree = function(){
+    console.log('called updateTree');
     $http.put('/trees', self.currentTree).then(function(data){
+      console.log(data);
       self.currentTree = data.data;
       Tree.currentTree = self.currentTree;
     });

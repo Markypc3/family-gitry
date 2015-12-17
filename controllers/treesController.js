@@ -32,9 +32,9 @@ function fetchOne(req, res){
 
 function update(req, res) {
   Tree.findOne({_id: req.body._id}, function(err, tree){
-    tree.rootPersonId = req.body.tree.rootPersonId;
-    tree.title = req.body.tree.title;
-    tree.description = req.body.tree.description;
+    tree.rootPersonId = req.body.rootPersonId;
+    tree.title = req.body.title;
+    tree.description = req.body.description;
     tree.save(function(err, tree){
       if(err) res.send(err);
       res.send(tree);
@@ -42,8 +42,8 @@ function update(req, res) {
   });
 }
 function destroy(req, res){
-  let treeParams = req.body.tree;
-  Tree.findOne({ _id : treeParams.id }, function(err, tree){
+  let treeParams = req.body;
+  Tree.findOne({ _id : treeParams._id }, function(err, tree){
     if (err) { res.send(err) }
     tree.remove(function (err, tree) {
       if (err) { res.send(err); }

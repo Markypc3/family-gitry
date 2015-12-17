@@ -30,59 +30,156 @@
         <button type="button" name="logout" ng-show="user.loggedin" ng-click="user.logout()">Logout</button>
       </div>
     </div>
-    <div class="control">
-      <div class="treeControlModule" ng-controller="treesController as tree">
-        <div class="greeting" ng-show="!tree.loggedin()">
-          <h1>Welcome to Family Gitry!</h1>
-          <h2>Login to access your trees</h2>
-        </div>
-        <div class="treecontrols" ng-show="tree.loggedin()">
+    <div class="control treeControlModule" ng-controller="treesController as tree">
+      <div class="greeting" ng-show="!tree.loggedin()">
+        <h1>Welcome to Family Gitry!</h1>
+        <h2>Login to access your trees</h2>
+      </div>
+      <div class="treeControlModule" >
+        <ul class="treeControls" ng-show="tree.loggedin() && !tree.currentPersonIsSet()" >
+          <li name="addTree" ng-show="tree.levelOneCntl" ng-click="tree.setAddTreeMode()">New Tree</li>
+          <li name="openTree" ng-show="tree.levelOneCntl" ng-click="tree.setSelectTreeMode()">Open Tree</li>
+          <ul class="addTree" ng-show="tree.addTreeMode">
+            <li class="backbutton" ng-click="tree.setLevelOneCntl()">Back</li>
+            <li><input type="text" name="title" placeholder="Tree Title" ng-model="tree.newTree.title" value=""></li>
+            <li><input type="textarea" name="description" placeholder="Tree description" ng-model="tree.newTree.description" value=""></li>
+            <li name="SubmitNewTree" ng-click="tree.createTree()">Create Tree</li>
+          </ul>
+          <ul class="openTree" ng-show="tree.selectTreeMode">
+            <li class="backbutton" ng-show="tree.selectTreeMode" ng-click="tree.setLevelOneCntl()">Back</li>
+            <li ng-repeat="treeRoot in tree.trees">
+              {{treeRoot.title}}
+              <button type="button" name="editTreeMeta" ng-click ="tree.setEditTreeMetaMode(treeRoot)">Edit Metadata</button>
+              <button type="button" name="openTree" ng-show="treeRoot.rootPersonId != null" ng-click="tree.setEditTreeMode(treeRoot)">Open</button>
+            </li>
+          </ul>
+          <ul class="editTree" ng-show="tree.editTreeMetaMode">
+            <li class="backbutton" ng-click="tree.setLevelOneCntl()">Back</li>
+            <input type="text" name="title" placeholder="Tree Title" ng-model="tree.currentTree.title" value="">
+            <input type="textarea" name="description" placeholder="Tree description" ng-model="tree.currentTree.description" value="">
+            <li name="updateRootPerson" ng-show="tree.currentTree.rootPersonId == null" ng-click="tree.setAddRootPersonMode()">Update Root Person</li>
+            <li type="button" name="SubmitSaveTree" ng-click="tree.updateTree()">Save</li>
+          </ul>
+          <ul class="addInitialRootPerson" ng-show="tree.addRootPersonMode">
+            <li class="backbutton" ng-click="tree.setEditTreeMetaMode(tree.currentTree)">Back</li>
+            <input type="text" name="rootPersonFirstName" ng-model="tree.rootPerson.firstName" placeholder="First Name" value="">
+            <input type="text" name="rootPersonMiddleName" ng-model="tree.rootPerson.middleName" placeholder="Middle Name" value="">
+            <input type="text" name="rootPersonLastName" ng-model="tree.rootPerson.lastName" placeholder="Last Name" value="">
+            <input type="text" name="rootPersonEmail" ng-model="tree.rootPerson.email" placeholder="email" value="">
+            <input type="text" name="rootPersonGender" ng-model="tree.rootPerson.gender" placeholder="gender" value="">
+            <label for="rootPersonDoB">Date of Birth</label>
+            <input type="date" name="rootPersonDoB" ng-model="tree.rootPerson.dateOfBirth" value="">
+            <input type="checkbox" name="rootPersonDoDToggle" ng-model="tree.addRootPersonModeDeceasedToggle" value="toggle DoD">
+            <label for="rootPersonDoD" ng-show="tree.addRootPersonModeDeceasedToggle">Date of Death</label>
+            <input type="date" name="rootPersonDoD" ng-show="tree.addRootPersonModeDeceasedToggle" ng-model="tree.rootPerson.dateOfDeath" value="">
+            <input type="textarea" name="rootPersonInterests" ng-model="tree.rootPerson.interests" placeholder="Interests" value="">
+            <input type="textarea" name="rootPersonBio" ng-model="tree.rootPerson.bio" placeholder="Bio" value="">
+            <li class="submitNewRootPerson" ng-click="tree.updateRootPerson(tree.currentTree)">Save Root Person</li>
+          </ul>
+          <!-- <li>Delete Tree</li> -->
+        </ul>
+      </div>
+    </div>
+    <div class="peopleControlModule" ng-controller="peopleController as person">
+      <div class="control" ng-show="person.viewPersonMode">
+        <ul class="personcontrols">
+          <li ng-click="person.setEditPersonMode()">Edit person</li>
+          <li ng-click="person.setAddChildMode()">Add Child</li>
+          <li ng-click="person.setAddParentMode()">Add Parent</li>
+          <li ng-click="person.setAddSpouseMode()">Add Spouse</li>
+        </ul>
+        <form class="addChild" ng-show="person.addChildMode">
+          <li class="backbutton" ng-click="person.setEditPersonMode(person.currentPerson)">Back</li>
+          <input type="text" name="childPersonFirstName" ng-model="person.childPerson.firstName" placeholder="First Name" value="">
+          <input type="text" name="childPersonMiddleName" ng-model="person.childPerson.middleName" placeholder="Middle Name" value="">
+          <input type="text" name="childPersonLastName" ng-model="person.childPerson.firstName" placeholder="Last Name" value="">
+          <input type="text" name="childPersonEmail" ng-model="person.childPerson.email" placeholder="email" value="">
+          <input type="text" name="childPersonGender" ng-model="person.childPerson.gender" placeholder="gender" value="">
+          <label for="childPersonDoB">Date of Birth</label>
+          <input type="date" name="childPersonDoB" ng-model="person.childPerson.dateOfBirth" value="">
+          <input type="checkbox" name="childPersonDoDToggle" ng-model="person.addchildPersonModeDeceasedToggle" value="">
+          <label for="childPersonDoD" ng-show="person.addchildPersonModeDeceasedToggle">Date of Death</label>
+          <input type="date" name="childPersonDoD" ng-show="person.addchildPersonModeDeceasedToggle" ng-model="person.childPerson.dateOfDeath" value="">
+          <input type="textarea" name="childPersonInterests" ng-model="person.childPerson.interests" placeholder="Interests" value="">
+          <input type="textarea" name="childPersonBio" ng-model="person.childPerson.bio" placeholder="Bio" value="">
+          <li class="submitNewchildPerson" ng-click="person.addChild()">Add Child</li>
+        </form>
+        <form class="addSpouse" ng-show="person.addSpouseMode">
+          <li class="backbutton" ng-click="person.setEditPersonMode(person.currentPerson)">Back</li>
+          <input type="text" name="spousePersonFirstName" ng-model="person.spousePerson.firstName" placeholder="First Name" value="">
+          <input type="text" name="spousePersonMiddleName" ng-model="person.spousePerson.middleName" placeholder="Middle Name" value="">
+          <input type="text" name="spousePersonLastName" ng-model="person.spousePerson.firstName" placeholder="Last Name" value="">
+          <input type="text" name="spousePersonEmail" ng-model="person.spousePerson.email" placeholder="email" value="">
+          <input type="text" name="spousePersonGender" ng-model="person.spousePerson.gender" placeholder="gender" value="">
+          <label for="spousePersonDoB">Date of Birth</label>
+          <input type="date" name="spousePersonDoB" ng-model="person.spousePerson.dateOfBirth" value="">
+          <input type="checkbox" name="spousePersonDoDToggle" ng-model="person.addspousePersonModeDeceasedToggle" value="">
+          <label for="spousePersonDoD" ng-show="person.addspousePersonModeDeceasedToggle">Date of Death</label>
+          <input type="date" name="spousePersonDoD" ng-show="person.addspousePersonModeDeceasedToggle" ng-model="person.spousePerson.dateOfDeath" value="">
+          <input type="textarea" name="spousePersonInterests" ng-model="person.spousePerson.interests" placeholder="Interests" value="">
+          <input type="textarea" name="spousePersonBio" ng-model="person.spousePerson.bio" placeholder="Bio" value="">
+          <li class="submitNewspousePerson" ng-click="person.addSpouse()">Add Spouse</li>
+        </form>
+        <form class="addParent" ng-show="person.addParentMode">
+          <li class="backbutton" ng-click="person.setEditPersonMode(person.currentPerson)">Back</li>
+          <input type="text" name="parentPersonFirstName" ng-model="person.parentPerson.firstName" placeholder="First Name" value="">
+          <input type="text" name="parentPersonMiddleName" ng-model="person.parentPerson.middleName" placeholder="Middle Name" value="">
+          <input type="text" name="parentPersonLastName" ng-model="person.parentPerson.firstName" placeholder="Last Name" value="">
+          <input type="text" name="parentPersonEmail" ng-model="person.parentPerson.email" placeholder="email" value="">
+          <input type="text" name="parentPersonGender" ng-model="person.parentPerson.gender" placeholder="gender" value="">
+          <label for="parentPersonDoB">Date of Birth</label>
+          <input type="date" name="parentPersonDoB" ng-model="person.parentPerson.dateOfBirth" value="">
+          <input type="checkbox" name="parentPersonDoDToggle" ng-model="person.addparentPersonModeDeceasedToggle" value="">
+          <label for="parentPersonDoD" ng-show="person.addparentPersonModeDeceasedToggle">Date of Death</label>
+          <input type="date" name="parentPersonDoD" ng-show="person.addparentPersonModeDeceasedToggle" ng-model="person.parentPerson.dateOfDeath" value="">
+          <input type="textarea" name="parentPersonInterests" ng-model="person.parentPerson.interests" placeholder="Interests" value="">
+          <input type="textarea" name="parentPersonBio" ng-model="person.parentPerson.bio" placeholder="Bio" value="">
+          <li class="submitNewparentPerson" ng-click="person.addParent()">Add Child</li>
+        </form>
+      </div>
+      <div class="treeNavigator">
+        <div class="parents">
           <ul>
-            <li name="addTree" ng-show="tree.levelOneCntl" ng-click="tree.setAddTreeMode()">New Tree</li>
-            <form class="addTree" ng-show="tree.addTreeMode">
-              <li class="backbutton" ng-click="setLevelOneCntl()">Back</li>
-              <input type="text" name="title" placeholder="Tree Title" ng-model="tree.newTree.title" value="">
-              <input type="textarea" name="description" placeholder="Tree description" ng-model="tree.newTree.description" value="">
-              <input type="button" name="SubmitNewTree" ng-click="tree.createTree()" value="">
-            </form>
-            <li name="openTree" ng-show="tree.levelOneCntl" ng-click="tree.setSelectTreeMode()">Open Tree</li>
-            <ul class="openTree" ng-show"tree.selectTreeMode">
-              <li class="backbutton" ng-click="setLevelOneCntl()">Back</li>
-              <li ng-repeat="treeRoot in tree.trees">
-                {{treeRoot.title}}
-                <button type="button" name="editTreeMeta" ng-click ="tree.setEditTreeMetaMode(treeRoot)">Edit Metadata</button>
-                <button type="button" name="openTree" ng-show="treeRoot.rootPersonId != null" ng-click="tree.setEditTreeMode(treeRoot)">Open</button>
-              </li>
-            </ul>
-            <form class="editTree" ng-show="tree.editTreeMetaMode">
-              <li class="backbutton" ng-click="setLevelOneCntl()">Back</li>
-              <input type="text" name="title" placeholder="Tree Title" ng-model="tree.currentTree.title" value="">
-              <input type="textarea" name="description" placeholder="Tree description" ng-model="tree.currentTree.description" value="">
-              <input type="button" name="updateRootPerson" ng-show="tree.currentTree.rootPersonId == null" value="Update Root Person" ng-click="tree.setAddRootPersonMode()">
-              <input type="button" name="SubmitSaveTree" ng-click="tree.updateTree()" value="Save">
-            </form>
-            <form class="addInitialRootPerson" ng-show="tree.addRootPersonMode">
-              <li class="backbutton" ng-click="setEditTreeMode(Tree.currentTree)">Back</li>
-              <input type="text" name="rootPersonFirstName" ng-model="tree.rootPerson.firstName" placeholder="First Name" value="">
-              <input type="text" name="rootPersonMiddleName" ng-model="tree.rootPerson.middleName" placeholder="Middle Name" value="">
-              <input type="text" name="rootPersonLastName" ng-model="tree.rootPerson.firstName" placeholder="Last Name" value="">
-              <input type="text" name="rootPersonEmail" ng-model="tree.rootPerson.email" placeholder="email" value="">
-              <input type="text" name="rootPersonGender" ng-model="tree.rootPerson.gender" placeholder="gender" value="">
-              <label for="rootPersonDoB">Date of Birth</label>
-              <input type="date" name="rootPersonDoB" ng-model="tree.rootPerson.dateOfBirth" value="">
-              <input type="checkbox" name="rootPersonDoDToggle" ng-model="tree.addRootPersonModeDeceasedToggle" value="">
-              <label for="rootPersonDoD" ng-show="tree.addRootPersonModeDeceasedToggle">Date of Death</label>
-              <input type="date" name="rootPersonDoD" ng-show="tree.addRootPersonModeDeceasedToggle" ng-model="tree.rootPerson.dateOfDeath" value="">
-              <input type="textarea" name="rootPersonInterests" ng-model="tree.rootPerson.interests" placeholder="Interests" value="">
-              <input type="textarea" name="rootPersonBio" ng-model="tree.rootPerson.bio" placeholder="Bio" value="">
-              <li class="submitNewRootPerson" ng-click="tree.updateRootPerson(Tree.currentTree)">Save Root Person</li>
-            </form>
-            <!-- <li>Delete Tree</li> -->
+            <li ng-repeat="parent in person.currentPerson.parents" ng-dblclick="person.selectPerson(parent.parentId)">
+              {{
+                parent.firstName + ' ' +
+                (parent.middleName==''?'':parent.middleName + ' ')
+                + parent.lastName
+              }}
+            </li>
           </ul>
         </div>
-      </div>
-      <div class="peopleControlModule" ng-controller="peopleController as person">
-        
+        <div class="currentPerson" ng-show="person.viewPersonMode">
+          <div class="currentPersonContent">
+            {{
+              person.currentPerson.firstName + ' ' +
+              (person.currentPerson.middleName==''?'':person.currentPerson.middleName + ' ') +
+               person.currentPerson.lastName
+             }}
+          </div>
+        </div>
+        <div class="spouse">
+          <ul>
+            <li ng-repeat="spouse in person.currentPerson.spouse" ng-dblclick="person.selectPerson(spouse.spouseId)">
+              {{
+                person.currentPerson.firstName + ' ' +
+                (person.currentPerson.middleName==''?'':person.currentPerson.middleName + ' ') +
+                 person.currentPerson.lastName
+               }}
+            </li>
+          </ul>
+        </div>
+        <div class="children">
+          <ul>
+            <li ng-repeat="child in person.currentPerson.children" ng-dblclick="person.selectPerson(child.childId)">
+              {{
+                child.firstName + ' ' +
+                (child.middleName==''?'':child.middleName + ' ')
+                + child.lastName
+              }}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
     <div class="signature">

@@ -34,8 +34,8 @@ function fetchPeople(req, res){
 }
 
 function update(req, res){
-  let personParams = req.body.person;
-  Person.findOne({_id: personParams.id}, function(err, person){
+  let personParams = req.body;
+  Person.findOne({_id: personParams._id}, function(err, person){
     if(err) {res.send(err);}
     person = personParams;
     person.save(function(err, person){
@@ -46,8 +46,8 @@ function update(req, res){
 }
 
 function destroy(req, res) {
-  let personParams = req.body.person;
-  Person.findOne({ _id: personParams.id }, function(err, person) {
+  let personParams = req.body;
+  Person.findOne({ _id: personParams._id }, function(err, person) {
     if(err) { res.send(err); }
     person.remove(function(err, person){
       if(err) { res.send(err); }

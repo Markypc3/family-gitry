@@ -11,7 +11,14 @@ angular.module('familygitry',[])
   .factory('Tree', function(){
     return {
       currentTree: {},
-      newlyLoggedIn: false
+      newlyLoggedIn: false,
+      hideAllControls: function(){
+        levelOneCntl = false;
+        addTreeMode = false;
+        selectTreeMode = false;
+        editTreeMetaMode = false;
+        console.log('in Tree.hideAllControls');
+      }
     }
   })
   .factory('Person', function(){
@@ -19,7 +26,7 @@ angular.module('familygitry',[])
       currentPerson: {},
       newlyViewingPeople: true
     }
-  })
+  });
 
 usersController.$inject = ['$http', 'User', 'Tree'];
 treesController.$inject = ['$http', 'User', 'Tree', 'Person'];

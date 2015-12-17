@@ -25,3 +25,26 @@
   bottom:15px;
   width:100%;
 }
+
+.currentPerson {
+  font-family: 'Rubik', sans-serif;
+  display: inline-block;
+  position: relative;
+  margin: 0 auto;
+  height: 150px;
+  width: 150px;
+  left: 450px;
+  background-color: blue;
+  border-radius: 75px;
+  box-shadow: 15px 15px 10px 0px rgba(0,0,0,0.68);
+  color: white;
+}
+.currentPersonContent {
+  margin: auto;
+}
+.parents ul {
+  display: inline-block;
+}
+.children ul {
+  display: inline-block;
+}
